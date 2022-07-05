@@ -1,0 +1,112 @@
+let movies = [
+  {
+    name: "Falcon and the winter soldier",
+    des:
+      "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem",
+    image: "images/slider 2.PNG"
+  },
+  {
+    name: "Loki",
+    des:
+      "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem",
+    image: "images/slider 1.PNG"
+  },
+  {
+    name: "Wanda vision",
+    des:
+      "rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum ",
+    image: "images/slider 3.PNG"
+  },
+  {
+    name: "Raya and the last dragon",
+    des:
+      "necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.",
+    image: "images/slider 4.PNG"
+  },
+  {
+    name: "Luca",
+    des:
+      "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate rum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum ",
+    image: "images/slider 5.PNG"
+  }
+];
+
+const carousel = document.querySelector(".carousel");
+let sliders = [];
+
+let slideIndex = 0;
+
+const createSlide = () => {
+  if (slideIndex >= movies.length) {
+    slideIndex = 0;
+  }
+
+  let slide = document.createElement("div");
+  var imgElement = document.createElement("img");
+  let content = document.createElement("div");
+  let h1 = document.createElement("h1");
+  let p = document.createElement("p");
+
+  imgElement.appendChild(document.createTextNode(""));
+  h1.appendChild(document.createTextNode(movies[slideIndex].name));
+  p.appendChild(document.createTextNode(movies[slideIndex].des));
+  content.appendChild(h1);
+  content.appendChild(p);
+  slide.appendChild(content);
+  slide.appendChild(imgElement);
+  carousel.appendChild(slide);
+
+  imgElement.src = movies[slideIndex].image;
+  slideIndex++;
+
+  slide.className = "slider";
+  content.className = "slide-content";
+  h1.className = "movie-title";
+  p.className = "movie-des";
+
+  sliders.push(slide);
+
+  if (sliders.length) {
+    sliders[0].style.marginLeft = `calc(-${100 * (sliders.length - 2)}% - ${
+      30 * (sliders.length - 2)
+    }px)`;
+  }
+};
+
+for (let i = 0; i < 3; i++) {
+  createSlide();
+}
+
+setInterval(() => {
+  createSlide();
+}, 3000);
+
+const videoCards = [...document.querySelectorAll(".video-card")];
+
+videoCards.forEach((item) => {
+  item.addEventListener("mouseover", () => {
+    let video = item.children[1];
+    video.play();
+  });
+  item.addEventListener("mouseleave", () => {
+    let video = item.children[1];
+    video.pause();
+  });
+});
+
+let cardContainers = [...document.querySelectorAll(".card-container")];
+let preBtn = [...document.querySelectorAll(".pre-btn")];
+let nxtBtn = [...document.querySelectorAll(".nxt-btn")];
+
+cardContainers.forEach((item, i) => {
+  let containersDimensions = item.getBoundingClientRect();
+  let containerWidth = containersDimensions.width;
+
+  nxtBtn[i].addEventListener("click", () => {
+    item.scrollLeft += containerWidth - 200;
+  });
+
+  preBtn[i].addEventListener("click", () => {
+    item.scrollLeft -= containerWidth + 200;
+  });
+});
